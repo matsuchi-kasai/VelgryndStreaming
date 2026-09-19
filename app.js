@@ -1,16 +1,29 @@
-console.log("Velgrynd Streaming v12.0 Ultimate Engine Active.");
+console.log("Velgrynd Streaming v13.0 Ultimate Engine Active.");
 
-// Cek apakah device diblokir oleh Owner
-(function checkDeviceBan() {
-    const isBanned = localStorage.getItem('velgrynd_device_banned');
-    if(isBanned === 'true') {
-        document.body.innerHTML = `
-            <div style="background:#05070b; color:white; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
-                <h1 style="color:#ef4444; font-size:2rem; margin-bottom:10px;">🚫 PERANGKAT DIBLOKIR</h1>
-                <p style="color:#9ca3af; max-width:400px;">Perangkat atau akun Anda telah diblokir secara permanen oleh Owner Velgrynd Streaming.</p>
-            </div>
-        `;
-        throw new Error("Device Banned");
+// Cek apakah perangkat/member sedang diblokir (Owner ID 1 kebal mutlak dari ban)
+(function checkBanStatus() {
+    const isOwner = sessionStorage.getItem('velgrynd_owner_logged') === 'true';
+    if(isOwner) return; // Owner kebal dari sistem ban
+
+    const banDataStr = localStorage.getItem('velgrynd_active_ban');
+    if(banDataStr) {
+        try {
+            const banData = JSON.parse(banDataStr);
+            const now = new Date().getTime();
+            if(banData.expiresAt === 'permanent' || now < banData.expiresAt) {
+                const durText = banData.expiresAt === 'permanent' ? 'Permanen' : `hingga ${new Date(banData.expiresAt).toLocaleString('id-ID')}`;
+                document.body.innerHTML = `
+                    <div style="background:#05070b; color:white; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px;">
+                        <h1 style="color:#ef4444; font-size:2rem; margin-bottom:10px;">🚫 AKUN / PERANGKAT ANDA DIBLOKIR</h1>
+                        <p style="color:#9ca3af; max-width:450px; margin-bottom:15px;">Anda telah dikenakan sanksi banned oleh Owner Velgrynd Streaming (${banData.reason}).</p>
+                        <p style="color:#f59e0b; font-size:0.9rem;">Status Durasi: <b>${durText}</b></p>
+                    </div>
+                `;
+                throw new Error("Account Banned");
+            } else {
+                localStorage.removeItem('velgrynd_active_ban');
+            }
+        } catch(e) { console.error(e); }
     }
 })();
 
@@ -21,23 +34,8 @@ function getAllVideos() {
         if(data) stored = JSON.parse(data);
     } catch(e) { console.error(e); }
     
-    // Video bawaan default
-    let defaults = [
-        {
-            id: 1001,
-            title: "Masterclass Fullstack Web Development 2026",
-            uploader: "Velgrynd Official",
-            isOwner: true,
-            category: "Teknologi",
-            date: "20 September 2026",
-            views: "45.2rb",
-            likes: "4.1rb",
-            desc: "Platform video streaming mandiri dengan fitur lengkap dan server bebas lag tanpa error.",
-            url: "https://www.w3schools.com/html/mov_bbb.mp4",
-            comments: [{ user: "Budi", text: "Mantap web nya!" }]
-        }
-    ];
-    return [...stored, ...defaults];
+    // Jika kosong, tampilkan array kosong sesuai permintaan agar bersih
+    return stored;
 }
 
 function saveVideoToStorage(newVideo) {
@@ -47,10 +45,17 @@ function saveVideoToStorage(newVideo) {
         if(data) stored = JSON.parse(data);
         stored.unshift(newVideo);
         localStorage.setItem('velgrynd_all_videos', JSON.stringify(stored));
-    } catch(e) { alert('Gagal menyimpan video ke storage.'); }
+    } catch(e) { alert('Gagal menyimpan video ke server.'); }
 }
 
-// Cek Status Owner Sesi Persisten
 function isOwnerActive() {
     return sessionStorage.getItem('velgrynd_owner_logged') === 'true';
+}
+
+function getCurrentUser() {
+    const userStr = localStorage.getItem('velgrynd_current_user');
+    if(userStr) {
+        try { return JSON.parse(userStr); } catch(e){}
+    }
+    return null;
 }
