@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col justify-between">
 
     <header class="sticky top-0 z-50 glass-nav px-6 py-3.5 flex items-center justify-between">
         <a href="index.html" class="flex items-center space-x-3">
@@ -18,14 +18,13 @@
             <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Velgrynd<span class="text-white text-xs ml-1 px-1.5 py-0.5 rounded bg-purple-900 border border-purple-600">PLAYER</span></span>
         </a>
         <a href="index.html" class="text-sm font-semibold text-purple-400 hover:text-white flex items-center space-x-2">
-            <i class="fa-solid fa-arrow-left"></i><span>Kembali ke Beranda</span>
+            <i class="fa-solid fa-arrow-left"><span>Kembali ke Beranda</span></i>
         </a>
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 space-y-4">
-                <!-- PEMUTAR VIDEO DIPERBAIKI TOTAL AGAR 100% WORK -->
                 <div class="w-full bg-black rounded-3xl overflow-hidden shadow-2xl border border-purple-500/35 aspect-video flex items-center justify-center">
                     <video id="mainPlayer" controls autoplay playsinline class="w-full h-full object-contain" src=""></video>
                 </div>
@@ -37,20 +36,18 @@
                         <div class="flex items-center space-x-3">
                             <div id="uploaderAvatar" class="w-11 h-11 rounded-full bg-purple-600 flex items-center justify-center font-bold text-white text-lg shadow-lg">V</div>
                             <div>
-                                <h4 id="uploaderName" class="font-bold text-white text-sm flex items-center">Nama Uploader</h4>
-                                <p id="videoDate" class="text-xs text-gray-400">Tanggal Upload</p>
+                                <h4 id="uploaderName" class="font-bold text-white text-sm">Uploader</h4>
+                                <p id="videoDate" class="text-xs text-gray-400">Tanggal</p>
                             </div>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="handleLike()" class="bg-[#0b0f19] hover:bg-gray-800 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 border border-[#1a2234] transition">
-                                <i class="fa-solid fa-thumbs-up text-purple-400"></i>
-                                <span id="likeCount">12</span>
-                            </button>
-                        </div>
+                        <button onclick="handleLike()" class="bg-[#0b0f19] hover:bg-gray-800 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 border border-[#1a2234]">
+                            <i class="fa-solid fa-thumbs-up text-purple-400"></i>
+                            <span id="likeCount">12</span>
+                        </button>
                     </div>
 
                     <div class="bg-[#0b0f19] p-4 rounded-2xl border border-[#1a2234] text-sm text-gray-300">
-                        <p id="videoDesc" class="whitespace-pre-line">Deskripsi...</p>
+                        <p id="videoDesc" class="whitespace-pre-line"></p>
                     </div>
                 </div>
             </div>
@@ -63,9 +60,9 @@
                     </h3>
 
                     <div class="space-y-3">
-                        <input type="text" id="commentAuthor" placeholder="Nama Anda..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-purple-500">
-                        <textarea id="commentText" rows="2" placeholder="Tulis komentar..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-purple-500"></textarea>
-                        <button onclick="addComment()" class="w-full btn-gradient py-2.5 rounded-xl text-xs font-bold text-white shadow-lg transition">Kirim Komentar</button>
+                        <input type="text" id="commentAuthor" placeholder="Nama Anda..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200">
+                        <textarea id="commentText" rows="2" placeholder="Tulis komentar..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200"></textarea>
+                        <button onclick="addComment()" class="w-full btn-gradient py-2.5 rounded-xl text-xs font-bold text-white shadow-lg">Kirim Komentar</button>
                     </div>
 
                     <hr class="border-[#1a2234]">
@@ -75,6 +72,11 @@
             </div>
         </div>
     </main>
+
+    <!-- FOOTER KREDIT -->
+    <footer class="glass-nav py-4 px-6 mt-12 border-t border-[#1a2234] text-center">
+        <p class="text-xs text-gray-400">Velgrynd STREAMING Engine | <a href="https://github.com/rayzekagenou-dev" target="_blank" class="text-purple-400 hover:underline">GitHub: rayzekagenou-dev</a></p>
+    </footer>
 
     <script src="app.js"></script>
     <script>
@@ -91,9 +93,9 @@
                 player.load();
 
                 document.getElementById('videoTitle').innerText = currentVideoObj.title;
-                document.getElementById('uploaderName').innerHTML = `${currentVideoObj.uploader} ${currentVideoObj.isOwner ? '<i class="fa-solid fa-circle-check verified-badge ml-1"></i>' : ''}`;
+                document.getElementById('uploaderName').innerHTML = `${currentVideoObj.uploader} (ID: ${currentVideoObj.uploaderId || '1'}) ${currentVideoObj.isOwner ? '<i class="fa-solid fa-circle-check verified-badge ml-1"></i>' : ''}`;
                 document.getElementById('uploaderAvatar').innerText = currentVideoObj.uploader ? currentVideoObj.uploader.charAt(0).toUpperCase() : 'V';
-                document.getElementById('videoDate').innerText = `Diunggah tanggal ${currentVideoObj.date}`;
+                document.getElementById('videoDate').innerText = `Diunggah ${currentVideoObj.date}`;
                 document.getElementById('likeCount').innerText = currentVideoObj.likes || "12";
                 document.getElementById('videoDesc').innerText = currentVideoObj.desc;
                 renderComments(currentVideoObj.comments || []);
@@ -103,28 +105,43 @@
         function renderComments(comments) {
             document.getElementById('commentCount').innerText = comments.length;
             const list = document.getElementById('commentList');
+            const ownerActive = isOwnerActive();
+
             if(comments.length === 0) {
                 list.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Belum ada komentar.</p>`;
                 return;
             }
-            list.innerHTML = comments.map(c => `
-                <div class="bg-[#0b0f19] p-3.5 rounded-2xl border border-[#1a2234] space-y-1">
-                    <div class="font-bold text-xs text-purple-400">${c.user}</div>
+            list.innerHTML = comments.map((c, index) => `
+                <div class="bg-[#0b0f19] p-3 rounded-2xl border border-[#1a2234] space-y-1 relative">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-xs text-purple-400">${c.user} (ID: ${c.userId || '2'})</span>
+                        ${ownerActive ? `<button onclick="banCommenter('${c.userId || '2'}')" class="text-[10px] bg-red-600/20 text-red-400 px-2 py-0.5 rounded border border-red-500/30 hover:bg-red-600 hover:text-white transition">Ban Member Ini</button>` : ''}
+                    </div>
                     <p class="text-xs text-gray-300">${c.text}</p>
                 </div>
             `).join('');
         }
 
         function addComment() {
-            const author = document.getElementById('commentAuthor').value.trim() || "Penonton";
+            const user = getCurrentUser();
+            const author = user ? user.name : (document.getElementById('commentAuthor').value.trim() || "Penonton");
+            const userId = user ? user.id : "2";
             const text = document.getElementById('commentText').value.trim();
             if(!text) { alert('Komentar kosong!'); return; }
 
             if(!currentVideoObj.comments) currentVideoObj.comments = [];
-            currentVideoObj.comments.unshift({ user: author, text: text });
+            currentVideoObj.comments.unshift({ user: author, userId: userId, text: text });
             updateVideoInStorage(currentVideoObj);
             renderComments(currentVideoObj.comments);
             document.getElementById('commentText').value = "";
+        }
+
+        function banCommenter(userId) {
+            if(confirm(`Ban member dengan ID ${userId} dari komentar video ini?`)) {
+                const banObj = { targetId: userId, expiresAt: 'permanent', reason: 'Dibanned via komentar video oleh Owner' };
+                localStorage.setItem('velgrynd_active_ban', JSON.stringify(banObj));
+                alert(`Member ID ${userId} berhasil diblokir secara permanen!`);
+            }
         }
 
         function handleLike() {
@@ -133,7 +150,6 @@
             document.getElementById('likeCount').innerText = likes;
             currentVideoObj.likes = likes.toString();
             updateVideoInStorage(currentVideoObj);
-            alert('Suka video ini!');
         }
 
         function updateVideoInStorage(updatedVid) {
