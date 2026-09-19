@@ -1,0 +1,20 @@
+{
+  "project_name": "Velgrynd STREAMING Engine",
+  "version": "14.0.0",
+  "server_status": "ONLINE",
+  "host": "Global Cloud Sync",
+  "database": "Cloud Realtime Storage",
+  "owner_verification": {
+    "email": "rayzekagenou@gmail.com",
+    "backup_email": "velgrynd@gmail.com",
+    "secure_code": "552255",
+    "owner_id": 1
+  },
+  "features": {
+    "live_sync": true,
+    "unlimited_upload": true,
+    "device_ban_system": true,
+    "level_system": "24 minutes watch to level 50"
+  },
+  "github_repository": "https://github.com/rayzekagenou-dev"
+}
