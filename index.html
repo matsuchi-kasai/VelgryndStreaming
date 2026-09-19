@@ -20,19 +20,15 @@
 
         <div class="hidden md:flex items-center flex-1 max-w-xl mx-8">
             <div class="relative w-full">
-                <input type="text" id="searchInput" oninput="searchVideos()" placeholder="Cari video, kreator, atau topik..." class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-full py-2 pl-11 pr-4 text-sm text-gray-200 focus:outline-none focus:border-purple-500 transition">
+                <input type="text" id="searchInput" oninput="searchVideos()" placeholder="Cari video atau kreator..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-full py-2 pl-11 pr-4 text-sm text-gray-200 focus:outline-none focus:border-purple-500 transition">
                 <i class="fa-solid fa-search absolute left-4 top-3 text-gray-500"></i>
             </div>
         </div>
 
         <div class="flex items-center space-x-3">
-            <a href="tools.html" class="hidden sm:flex items-center space-x-2 bg-purple-900/50 hover:bg-purple-900 border border-purple-700/60 px-4 py-2 rounded-xl text-sm font-semibold transition">
-                <i class="fa-solid fa-toolbox text-purple-400"></i>
-                <span>Ribuan Tools</span>
-            </a>
-            <button onclick="openOwnerAuthModal()" class="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition">
+            <button onclick="openOwnerAuthModal()" id="ownerNavBtn" class="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition">
                 <i class="fa-solid fa-shield-halved text-purple-400"></i>
-                <span>Area Owner</span>
+                <span id="ownerBtnLabel">Area Owner</span>
             </button>
             <a href="upload.html" class="flex items-center space-x-2 btn-gradient px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -41,40 +37,39 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-8 animate-fade">
-        <div class="relative rounded-3xl overflow-hidden glass-card p-8 md:p-12 border border-purple-500/30 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="space-y-4 max-w-2xl">
-                <span class="px-3 py-1 bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs font-bold rounded-full uppercase tracking-wider">Platform Video & Studio Kreator Mandiri</span>
-                <h1 class="text-3xl md:text-5xl font-black text-white leading-tight">Tonton, Bagikan, & Unggah Videomu Seketika</h1>
-                <p class="text-gray-300 text-sm md:text-base">Setiap video yang di-upload akan langsung tayang di beranda dengan pemutar interaktif, tanggal upload, penonton, dan kolom komentar real-time!</p>
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-8">
+        <!-- BANNER PROFIL OWNER & CUSTOM BANNER -->
+        <div id="bannerContainer" class="relative rounded-3xl overflow-hidden glass-card p-8 md:p-12 border border-purple-500/30 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 bg-cover bg-center" style="background-image: linear-gradient(to right, rgba(15,19,31,0.9), rgba(15,19,31,0.7)), url('https://files.catbox.moe/o98fq6.png');">
+            <div class="space-y-4 max-w-2xl relative z-10">
+                <div class="flex items-center space-x-2">
+                    <span class="px-3 py-1 bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs font-bold rounded-full uppercase tracking-wider">Server Utama No Lag (100% Free)</span>
+                    <span id="ownerBadgeStatus" class="hidden px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/40 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> Owner Terverifikasi
+                    </span>
+                </div>
+                <h1 class="text-3xl md:text-5xl font-black text-white leading-tight">Velgrynd STREAMING Ultimate Hub</h1>
+                <p class="text-gray-300 text-sm md:text-base">Nikmati server berkecepatan tinggi tanpa jeda. Semua video langsung tayang dengan pemutar stabil untuk seluruh penonton.</p>
             </div>
-            <div class="w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-purple-500/50 shadow-2xl flex-shrink-0">
-                <img src="https://files.catbox.moe/o98fq6.png" alt="Velgrynd Visual" class="w-full h-full object-cover">
+            <div class="w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-purple-500/50 shadow-2xl flex-shrink-0 relative z-10">
+                <img id="profileBannerImg" src="https://files.catbox.moe/o98fq6.png" alt="Velgrynd Visual" class="w-full h-full object-cover">
             </div>
         </div>
 
-        <div class="flex items-center space-x-2 overflow-x-auto pb-2">
-            <button onclick="filterCat('Semua')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">Semua Kategori</button>
-            <button onclick="filterCat('Teknologi')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">💻 Teknologi</button>
-            <button onclick="filterCat('Gaming')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">🎮 Gaming</button>
-            <button onclick="filterCat('Musik')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">🎵 Musik</button>
-            <button onclick="filterCat('Vlog')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">🍿 Vlog & Hiburan</button>
-        </div>
-
+        <!-- GRID VIDEO -->
         <div class="space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-bold text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-fire text-pink-500"></i>
-                    <span>Video Terbaru & Pilihan Publik</span>
+                    <i class="fa-solid fa-video text-purple-400"></i>
+                    <span>Video Publik Terbaru</span>
                 </h2>
-                <span id="videoCountBadge" class="text-xs text-gray-400 bg-[#111622] px-3 py-1 rounded-full border border-[#1f293d]">0 Video Tayang</span>
+                <span id="videoCountBadge" class="text-xs text-gray-400 bg-[#0f131f] px-3 py-1 rounded-full border border-[#1a2234]">0 Video</span>
             </div>
 
             <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
         </div>
     </main>
 
-    <!-- MODAL OTENTIKASI OWNER (PRIVASI KETAT & DISEMBUNYIKAN) -->
+    <!-- MODAL OWNER / MEMBER AUTH -->
     <div id="ownerAuthModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden">
         <div class="glass-card max-w-md w-full p-8 rounded-3xl border border-purple-500/40 shadow-2xl space-y-6 relative">
             <button onclick="closeOwnerAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -84,36 +79,49 @@
                     <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-purple-500/30">
                         <i class="fa-solid fa-shield-halved"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-white">Otentikasi Owner Velgrynd</h2>
-                    <p class="text-xs text-gray-400">Masukkan email resmi owner untuk melanjutkan.</p>
+                    <h2 class="text-xl font-bold text-white">Login Owner Velgrynd</h2>
+                    <p class="text-xs text-gray-400">Masukkan email resmi owner untuk akses panel kontrol.</p>
                 </div>
                 <div class="space-y-3">
-                    <input type="email" id="inputOwnerEmail" placeholder="Masukkan email owner..." class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-purple-500">
-                    <button onclick="submitOwnerEmail()" class="w-full btn-gradient py-3 rounded-xl font-bold text-white shadow-lg transition">Lanjutkan Verifikasi</button>
+                    <input type="email" id="inputOwnerEmail" placeholder="Email owner..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-purple-500">
+                    <button onclick="submitOwnerEmail()" class="w-full btn-gradient py-3 rounded-xl font-bold text-white shadow-lg transition">Lanjutkan</button>
                 </div>
             </div>
 
             <div id="stepOwnerCode" class="space-y-4 hidden">
                 <div class="text-center space-y-2">
                     <div class="w-14 h-14 bg-green-600/20 text-green-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-green-500/30">
-                        <i class="fa-solid fa-envelope-circle-check"></i>
+                        <i class="fa-solid fa-key"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-white">Verifikasi Kode Gmail</h2>
-                    <p class="text-xs text-gray-400">Masukkan 6 digit kode rahasia keamanan.</p>
+                    <h2 class="text-xl font-bold text-white">Kode Verifikasi</h2>
+                    <p class="text-xs text-gray-400">Masukkan 6 digit kode rahasia.</p>
                 </div>
                 <div class="space-y-3">
-                    <input type="password" id="inputVerificationCode" maxlength="6" placeholder="••••••" class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-xl px-4 py-3 text-center text-xl tracking-widest font-mono text-white focus:outline-none focus:border-purple-500">
-                    <button onclick="verifyOwnerCode()" class="w-full bg-green-600 hover:bg-green-500 py-3 rounded-xl font-bold text-white shadow-lg transition">Verifikasi & Masuk Studio</button>
+                    <input type="password" id="inputVerificationCode" maxlength="6" placeholder="••••••" class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-4 py-3 text-center text-xl tracking-widest font-mono text-white focus:outline-none focus:border-purple-500">
+                    <button onclick="verifyOwnerCode()" class="w-full bg-green-600 hover:bg-green-500 py-3 rounded-xl font-bold text-white shadow-lg transition">Verifikasi</button>
                 </div>
             </div>
 
-            <div id="stepOwnerDashboard" class="space-y-4 hidden text-center">
-                <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-purple-500/30">
-                    <i class="fa-solid fa-circle-check text-green-400"></i>
+            <div id="stepOwnerDashboard" class="space-y-4 hidden">
+                <div class="text-center space-y-2">
+                    <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-purple-500/30">
+                        <i class="fa-solid fa-crown text-yellow-400"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Panel Kontrol Owner</h2>
+                    <p class="text-xs text-purple-300">Akses penuh dengan Centang Biru & Kontrol Sistem.</p>
                 </div>
-                <h2 class="text-xl font-bold text-white">Selamat Datang, Owner Velgrynd!</h2>
-                <p class="text-xs text-gray-300">Akses level tertinggi aktif. Silakan buka studio upload.</p>
-                <button onclick="window.location.href='upload.html'" class="w-full btn-gradient py-3 rounded-xl font-bold text-white shadow-lg transition">Buka Studio Upload Utama</button>
+                <div class="space-y-3 pt-2">
+                    <button onclick="window.location.href='upload.html'" class="w-full btn-gradient py-3 rounded-xl font-bold text-white shadow-lg transition">Buka Studio Upload Owner</button>
+                    <div class="border-t border-[#1a2234] pt-3 space-y-2">
+                        <label class="text-xs font-semibold text-gray-300">Kustomisasi Banner & Foto Profil</label>
+                        <input type="text" id="customBannerUrl" placeholder="URL Gambar Banner Baru..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200">
+                        <button onclick="updateOwnerBanner()" class="w-full bg-gray-800 hover:bg-gray-700 py-2 rounded-xl text-xs font-bold text-white">Perbarui Banner</button>
+                    </div>
+                    <div class="border-t border-[#1a2234] pt-3 space-y-2">
+                        <label class="text-xs font-semibold text-red-400">Zona Bahaya (Ban & Blokir)</label>
+                        <button onclick="banDeviceTarget()" class="w-full bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-xl text-xs font-bold border border-red-500/30 transition">Blokir Perangkat Ini (Ban Device)</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -121,32 +129,48 @@
     <script src="app.js"></script>
     <script>
         let currentVideos = [];
+
         document.addEventListener("DOMContentLoaded", () => {
             currentVideos = getAllVideos();
             renderVideos(currentVideos);
+            
+            // Cek jika owner sudah login sebelumnya (sesi persisten)
+            if(isOwnerActive()) {
+                document.getElementById('ownerBtnLabel').innerHTML = `Owner <i class="fa-solid fa-circle-check text-blue-400 ml-1"></i>`;
+                document.getElementById('ownerBadgeStatus').classList.remove('hidden');
+            }
+            
+            // Muat kustom banner jika ada
+            const savedBanner = localStorage.getItem('velgrynd_custom_banner');
+            if(savedBanner) {
+                document.getElementById('bannerContainer').style.backgroundImage = `linear-gradient(to right, rgba(15,19,31,0.9), rgba(15,19,31,0.7)), url('${savedBanner}')`;
+                document.getElementById('profileBannerImg').src = savedBanner;
+            }
         });
 
         function renderVideos(data) {
             const grid = document.getElementById('videoGrid');
-            document.getElementById('videoCountBadge').innerText = `${data.length} Video Tayang`;
+            document.getElementById('videoCountBadge').innerText = `${data.length} Video`;
             if(data.length === 0) {
                 grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-12">Belum ada video.</p>`;
                 return;
             }
             grid.innerHTML = data.map(v => `
-                <div onclick="openWatchPage(${v.id})" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col group">
+                <div onclick="openWatch(${v.id})" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col group">
                     <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
                         <video src="${v.url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" preload="metadata"></video>
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition"></div>
-                        <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] text-white font-mono">HD</div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] text-white font-mono">HD Server</div>
                     </div>
-                    <div class="p-4 flex flex-col flex-1 space-y-2.5">
+                    <div class="p-4 flex flex-col flex-1 space-y-2">
                         <div class="flex items-center justify-between text-xs">
                             <span class="text-purple-400 font-bold">${v.category}</span>
-                            <span class="text-gray-400 truncate max-w-[120px]">${v.uploader}</span>
+                            <span class="text-gray-400 flex items-center">
+                                ${v.uploader} ${v.isOwner ? '<i class="fa-solid fa-circle-check verified-badge text-xs ml-1"></i>' : ''}
+                            </span>
                         </div>
                         <h3 class="font-bold text-white text-base line-clamp-2 group-hover:text-purple-300 transition">${v.title}</h3>
-                        <div class="mt-auto pt-3 flex items-center justify-between text-xs text-gray-400 border-t border-[#1f293d]">
+                        <div class="mt-auto pt-2 flex items-center justify-between text-xs text-gray-400 border-t border-[#1a2234]">
                             <span><i class="fa-solid fa-eye mr-1"></i>${v.views}</span>
                             <span><i class="fa-solid fa-calendar-days mr-1"></i>${v.date}</span>
                         </div>
@@ -155,35 +179,28 @@
             `).join('');
         }
 
-        function openWatchPage(id) {
+        function openWatch(id) {
             sessionStorage.setItem('active_video_id', id);
             window.location.href = 'watch.html';
         }
 
         function searchVideos() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = currentVideos.filter(v => v.title.toLowerCase().includes(query) || v.uploader.toLowerCase().includes(query));
-            renderVideos(filtered);
-        }
-
-        function filterCat(cat) {
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('bg-purple-600', 'text-white', 'font-bold');
-                btn.classList.add('bg-[#111622]', 'text-gray-300', 'font-semibold');
-            });
-            event.target.classList.remove('bg-[#111622]', 'text-gray-300', 'font-semibold');
-            event.target.classList.add('bg-purple-600', 'text-white', 'font-bold');
-
-            if(cat === 'Semua') renderVideos(currentVideos);
-            else renderVideos(currentVideos.filter(v => v.category === cat));
+            renderVideos(currentVideos.filter(v => v.title.toLowerCase().includes(query) || v.uploader.toLowerCase().includes(query)));
         }
 
         function openOwnerAuthModal() {
             document.getElementById('ownerAuthModal').classList.remove('hidden');
-            document.getElementById('stepOwnerEmail').classList.remove('hidden');
-            document.getElementById('stepOwnerCode').classList.add('hidden');
-            document.getElementById('stepOwnerDashboard').classList.add('hidden');
-            document.getElementById('inputOwnerEmail').value = "";
+            if(isOwnerActive()) {
+                document.getElementById('stepOwnerEmail').classList.add('hidden');
+                document.getElementById('stepOwnerCode').classList.add('hidden');
+                document.getElementById('stepOwnerDashboard').classList.remove('hidden');
+            } else {
+                document.getElementById('stepOwnerEmail').classList.remove('hidden');
+                document.getElementById('stepOwnerCode').classList.add('hidden');
+                document.getElementById('stepOwnerDashboard').classList.add('hidden');
+                document.getElementById('inputOwnerEmail').value = "";
+            }
         }
 
         function closeOwnerAuthModal() {
@@ -193,12 +210,11 @@
         function submitOwnerEmail() {
             const email = document.getElementById('inputOwnerEmail').value.trim().toLowerCase();
             if(email !== 'velgrynd@gmail.com') {
-                alert('Akses Ditolak! Email tersebut bukan email owner resmi.');
+                alert('Email tidak dikenali sebagai owner!');
                 return;
             }
             document.getElementById('stepOwnerEmail').classList.add('hidden');
             document.getElementById('stepOwnerCode').classList.remove('hidden');
-            document.getElementById('inputVerificationCode').value = "";
         }
 
         function verifyOwnerCode() {
@@ -207,8 +223,29 @@
                 alert('Kode verifikasi salah!');
                 return;
             }
+            sessionStorage.setItem('velgrynd_owner_logged', 'true');
             document.getElementById('stepOwnerCode').classList.add('hidden');
             document.getElementById('stepOwnerDashboard').classList.remove('hidden');
+            document.getElementById('ownerBtnLabel').innerHTML = `Owner <i class="fa-solid fa-circle-check text-blue-400 ml-1"></i>`;
+            document.getElementById('ownerBadgeStatus').classList.remove('hidden');
+            alert('Berhasil login sebagai Owner!');
+        }
+
+        function updateOwnerBanner() {
+            const url = document.getElementById('customBannerUrl').value.trim();
+            if(!url) { alert('Masukkan URL gambar banner!'); return; }
+            localStorage.setItem('velgrynd_custom_banner', url);
+            document.getElementById('bannerContainer').style.backgroundImage = `linear-gradient(to right, rgba(15,19,31,0.9), rgba(15,19,31,0.7)), url('${url}')`;
+            document.getElementById('profileBannerImg').src = url;
+            alert('Banner profil berhasil diperbarui!');
+        }
+
+        function banDeviceTarget() {
+            if(confirm('Apakah Anda yakin ingin memblokir perangkat ini dari server?')) {
+                localStorage.setItem('velgrynd_device_banned', 'true');
+                alert('Perangkat berhasil diblokir!');
+                location.reload();
+            }
         }
     </script>
 </body>
