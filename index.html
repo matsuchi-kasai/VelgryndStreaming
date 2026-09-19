@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velgrynd STREAMING - Beranda Utama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-50 glass-nav px-6 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <i class="fa-solid fa-play text-white text-lg"></i>
+            </div>
+            <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Velgrynd<span class="text-white text-xs ml-1 px-1.5 py-0.5 rounded bg-purple-900 border border-purple-600">STREAMING</span></span>
+        </div>
+
+        <div class="hidden md:flex items-center flex-1 max-w-xl mx-8">
+            <div class="relative w-full">
+                <input type="text" id="searchInput" oninput="searchVideos()" placeholder="Cari video, kreator, atau topik..." class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-full py-2 pl-11 pr-4 text-sm text-gray-200 focus:outline-none focus:border-purple-500 transition">
+                <i class="fa-solid fa-search absolute left-4 top-3 text-gray-500"></i>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <a href="tools.html" class="hidden sm:flex items-center space-x-2 bg-purple-900/50 hover:bg-purple-900 border border-purple-700/60 px-4 py-2 rounded-xl text-sm font-semibold transition">
+                <i class="fa-solid fa-toolbox text-purple-400"></i>
+                <span>Ribuan Tools</span>
+            </a>
+            <button onclick="openOwnerAuthModal()" class="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition">
+                <i class="fa-solid fa-shield-halved text-purple-400"></i>
+                <span>Area Owner</span>
+            </button>
+            <a href="upload.html" class="flex items-center space-x-2 btn-gradient px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload Video</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-8 animate-fade">
+        <div class="relative rounded-3xl overflow-hidden glass-card p-8 md:p-12 border border-purple-500/30 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-4 max-w-2xl">
+                <span class="px-3 py-1 bg-purple-500/20 border border-purple-500/40 text-purple-300 text-xs font-bold rounded-full uppercase tracking-wider">Platform Video & Studio Kreator Mandiri</span>
+                <h1 class="text-3xl md:text-5xl font-black text-white leading-tight">Tonton, Bagikan, & Unggah Videomu Seketika</h1>
+                <p class="text-gray-300 text-sm md:text-base">Setiap video yang di-upload akan langsung tayang di beranda dengan pemutar interaktif, tanggal upload, penonton, dan kolom komentar real-time!</p>
+            </div>
+            <div class="w-40 h-40 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-purple-500/50 shadow-2xl flex-shrink-0">
+                <img src="https://files.catbox.moe/o98fq6.png" alt="Velgrynd Visual" class="w-full h-full object-cover">
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2 overflow-x-auto pb-2">
+            <button onclick="filterCat('Semua')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">Semua Kategori</button>
+            <button onclick="filterCat('Teknologi')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">💻 Teknologi</button>
+            <button onclick="filterCat('Gaming')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">🎮 Gaming</button>
+            <button onclick="filterCat('Musik')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">🎵 Musik</button>
+            <button onclick="filterCat('Vlog')" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-[#111622] hover:bg-gray-800 text-gray-300 border border-[#1f293d] transition whitespace-nowrap">🍿 Vlog & Hiburan</button>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                    <i class="fa-solid fa-fire text-pink-500"></i>
+                    <span>Video Terbaru & Pilihan Publik</span>
+                </h2>
+                <span id="videoCountBadge" class="text-xs text-gray-400 bg-[#111622] px-3 py-1 rounded-full border border-[#1f293d]">0 Video Tayang</span>
+            </div>
+
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        </div>
+    </main>
+
+    <!-- MODAL OTENTIKASI OWNER (PRIVASI KETAT & DISEMBUNYIKAN) -->
+    <div id="ownerAuthModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden">
+        <div class="glass-card max-w-md w-full p-8 rounded-3xl border border-purple-500/40 shadow-2xl space-y-6 relative">
+            <button onclick="closeOwnerAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            
+            <div id="stepOwnerEmail" class="space-y-4">
+                <div class="text-center space-y-2">
+                    <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-purple-500/30">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Otentikasi Owner Velgrynd</h2>
+                    <p class="text-xs text-gray-400">Masukkan email resmi owner untuk melanjutkan.</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="email" id="inputOwnerEmail" placeholder="Masukkan email owner..." class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-purple-500">
+                    <button onclick="submitOwnerEmail()" class="w-full btn-gradient py-3 rounded-xl font-bold text-white shadow-lg transition">Lanjutkan Verifikasi</button>
+                </div>
+            </div>
+
+            <div id="stepOwnerCode" class="space-y-4 hidden">
+                <div class="text-center space-y-2">
+                    <div class="w-14 h-14 bg-green-600/20 text-green-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-green-500/30">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Verifikasi Kode Gmail</h2>
+                    <p class="text-xs text-gray-400">Masukkan 6 digit kode rahasia keamanan.</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="password" id="inputVerificationCode" maxlength="6" placeholder="••••••" class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-xl px-4 py-3 text-center text-xl tracking-widest font-mono text-white focus:outline-none focus:border-purple-500">
+                    <button onclick="verifyOwnerCode()" class="w-full bg-green-600 hover:bg-green-500 py-3 rounded-xl font-bold text-white shadow-lg transition">Verifikasi & Masuk Studio</button>
+                </div>
+            </div>
+
+            <div id="stepOwnerDashboard" class="space-y-4 hidden text-center">
+                <div class="w-14 h-14 bg-purple-600/20 text-purple-400 rounded-2xl mx-auto flex items-center justify-center text-2xl border border-purple-500/30">
+                    <i class="fa-solid fa-circle-check text-green-400"></i>
+                </div>
+                <h2 class="text-xl font-bold text-white">Selamat Datang, Owner Velgrynd!</h2>
+                <p class="text-xs text-gray-300">Akses level tertinggi aktif. Silakan buka studio upload.</p>
+                <button onclick="window.location.href='upload.html'" class="w-full btn-gradient py-3 rounded-xl font-bold text-white shadow-lg transition">Buka Studio Upload Utama</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        let currentVideos = [];
+        document.addEventListener("DOMContentLoaded", () => {
+            currentVideos = getAllVideos();
+            renderVideos(currentVideos);
+        });
+
+        function renderVideos(data) {
+            const grid = document.getElementById('videoGrid');
+            document.getElementById('videoCountBadge').innerText = `${data.length} Video Tayang`;
+            if(data.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-12">Belum ada video.</p>`;
+                return;
+            }
+            grid.innerHTML = data.map(v => `
+                <div onclick="openWatchPage(${v.id})" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col group">
+                    <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
+                        <video src="${v.url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" preload="metadata"></video>
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition"></div>
+                        <div class="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] text-white font-mono">HD</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-1 space-y-2.5">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-purple-400 font-bold">${v.category}</span>
+                            <span class="text-gray-400 truncate max-w-[120px]">${v.uploader}</span>
+                        </div>
+                        <h3 class="font-bold text-white text-base line-clamp-2 group-hover:text-purple-300 transition">${v.title}</h3>
+                        <div class="mt-auto pt-3 flex items-center justify-between text-xs text-gray-400 border-t border-[#1f293d]">
+                            <span><i class="fa-solid fa-eye mr-1"></i>${v.views}</span>
+                            <span><i class="fa-solid fa-calendar-days mr-1"></i>${v.date}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openWatchPage(id) {
+            sessionStorage.setItem('active_video_id', id);
+            window.location.href = 'watch.html';
+        }
+
+        function searchVideos() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = currentVideos.filter(v => v.title.toLowerCase().includes(query) || v.uploader.toLowerCase().includes(query));
+            renderVideos(filtered);
+        }
+
+        function filterCat(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white', 'font-bold');
+                btn.classList.add('bg-[#111622]', 'text-gray-300', 'font-semibold');
+            });
+            event.target.classList.remove('bg-[#111622]', 'text-gray-300', 'font-semibold');
+            event.target.classList.add('bg-purple-600', 'text-white', 'font-bold');
+
+            if(cat === 'Semua') renderVideos(currentVideos);
+            else renderVideos(currentVideos.filter(v => v.category === cat));
+        }
+
+        function openOwnerAuthModal() {
+            document.getElementById('ownerAuthModal').classList.remove('hidden');
+            document.getElementById('stepOwnerEmail').classList.remove('hidden');
+            document.getElementById('stepOwnerCode').classList.add('hidden');
+            document.getElementById('stepOwnerDashboard').classList.add('hidden');
+            document.getElementById('inputOwnerEmail').value = "";
+        }
+
+        function closeOwnerAuthModal() {
+            document.getElementById('ownerAuthModal').classList.add('hidden');
+        }
+
+        function submitOwnerEmail() {
+            const email = document.getElementById('inputOwnerEmail').value.trim().toLowerCase();
+            if(email !== 'velgrynd@gmail.com') {
+                alert('Akses Ditolak! Email tersebut bukan email owner resmi.');
+                return;
+            }
+            document.getElementById('stepOwnerEmail').classList.add('hidden');
+            document.getElementById('stepOwnerCode').classList.remove('hidden');
+            document.getElementById('inputVerificationCode').value = "";
+        }
+
+        function verifyOwnerCode() {
+            const code = document.getElementById('inputVerificationCode').value.trim();
+            if(code !== '552255') {
+                alert('Kode verifikasi salah!');
+                return;
+            }
+            document.getElementById('stepOwnerCode').classList.add('hidden');
+            document.getElementById('stepOwnerDashboard').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
