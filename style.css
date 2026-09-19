@@ -1,0 +1,81 @@
+/* ==========================================================================
+   VELGRYND STREAMING ENTERPRISE STYLESHEET (v11.0)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --bg-dark: #07090e;
+    --bg-card: #111622;
+    --bg-card-hover: #192132;
+    --border-color: #1f293d;
+    --accent-purple: #9333ea;
+    --accent-pink: #ec4899;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: linear-gradient(to bottom, rgba(7, 9, 14, 0.88), rgba(7, 9, 14, 0.96)), url('https://files.catbox.moe/o98fq6.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: #2d3748; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4a5568; }
+
+.glass-nav {
+    background: rgba(17, 22, 34, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.glass-card {
+    background: rgba(17, 22, 34, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: rgba(25, 33, 50, 0.85);
+    border-color: rgba(147, 51, 234, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -10px rgba(147, 51, 234, 0.2);
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.4);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+    animation: fadeIn 0.4s ease forwards;
+}
