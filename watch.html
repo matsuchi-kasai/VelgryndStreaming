@@ -22,36 +22,34 @@
         </a>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6 animate-fade">
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="lg:col-span-2 space-y-4">
+                <!-- PEMUTAR VIDEO DIPERBAIKI TOTAL AGAR 100% WORK -->
                 <div class="w-full bg-black rounded-3xl overflow-hidden shadow-2xl border border-purple-500/35 aspect-video flex items-center justify-center">
-                    <video id="mainPlayer" controls autoplay class="w-full h-full object-contain" src=""></video>
+                    <video id="mainPlayer" controls autoplay playsinline class="w-full h-full object-contain" src=""></video>
                 </div>
 
                 <div class="glass-card p-6 rounded-3xl space-y-4">
                     <h1 id="videoTitle" class="text-xl md:text-2xl font-black text-white">Judul Video</h1>
                     
-                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[#1f293d] pb-4">
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[#1a2234] pb-4">
                         <div class="flex items-center space-x-3">
                             <div id="uploaderAvatar" class="w-11 h-11 rounded-full bg-purple-600 flex items-center justify-center font-bold text-white text-lg shadow-lg">V</div>
                             <div>
-                                <h4 id="uploaderName" class="font-bold text-white text-sm">Nama Uploader</h4>
+                                <h4 id="uploaderName" class="font-bold text-white text-sm flex items-center">Nama Uploader</h4>
                                 <p id="videoDate" class="text-xs text-gray-400">Tanggal Upload</p>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <button onclick="handleLike()" class="bg-[#0b0f19] hover:bg-gray-800 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 border border-[#1f293d] transition">
+                            <button onclick="handleLike()" class="bg-[#0b0f19] hover:bg-gray-800 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 border border-[#1a2234] transition">
                                 <i class="fa-solid fa-thumbs-up text-purple-400"></i>
-                                <span id="likeCount">120</span>
-                            </button>
-                            <button onclick="alert('Link video disalin!')" class="bg-[#0b0f19] hover:bg-gray-800 p-2.5 rounded-xl text-sm font-semibold border border-[#1f293d] transition">
-                                <i class="fa-solid fa-share"></i>
+                                <span id="likeCount">12</span>
                             </button>
                         </div>
                     </div>
 
-                    <div class="bg-[#0b0f19] p-4 rounded-2xl border border-[#1f293d] text-sm text-gray-300">
+                    <div class="bg-[#0b0f19] p-4 rounded-2xl border border-[#1a2234] text-sm text-gray-300">
                         <p id="videoDesc" class="whitespace-pre-line">Deskripsi...</p>
                     </div>
                 </div>
@@ -65,12 +63,12 @@
                     </h3>
 
                     <div class="space-y-3">
-                        <input type="text" id="commentAuthor" placeholder="Nama Anda..." class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-purple-500">
-                        <textarea id="commentText" rows="2" placeholder="Tulis komentar..." class="w-full bg-[#0b0f19] border border-[#1f293d] rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-purple-500"></textarea>
+                        <input type="text" id="commentAuthor" placeholder="Nama Anda..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-purple-500">
+                        <textarea id="commentText" rows="2" placeholder="Tulis komentar..." class="w-full bg-[#0b0f19] border border-[#1a2234] rounded-xl px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-purple-500"></textarea>
                         <button onclick="addComment()" class="w-full btn-gradient py-2.5 rounded-xl text-xs font-bold text-white shadow-lg transition">Kirim Komentar</button>
                     </div>
 
-                    <hr class="border-[#1f293d]">
+                    <hr class="border-[#1a2234]">
 
                     <div id="commentList" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
                 </div>
@@ -81,18 +79,22 @@
     <script src="app.js"></script>
     <script>
         let currentVideoObj = null;
+
         document.addEventListener("DOMContentLoaded", () => {
             const videoId = sessionStorage.getItem('active_video_id');
             const all = getAllVideos();
             currentVideoObj = all.find(v => v.id == videoId) || all[0];
 
             if(currentVideoObj) {
-                document.getElementById('mainPlayer').src = currentVideoObj.url;
+                const player = document.getElementById('mainPlayer');
+                player.src = currentVideoObj.url;
+                player.load();
+
                 document.getElementById('videoTitle').innerText = currentVideoObj.title;
-                document.getElementById('uploaderName').innerText = currentVideoObj.uploader;
+                document.getElementById('uploaderName').innerHTML = `${currentVideoObj.uploader} ${currentVideoObj.isOwner ? '<i class="fa-solid fa-circle-check verified-badge ml-1"></i>' : ''}`;
                 document.getElementById('uploaderAvatar').innerText = currentVideoObj.uploader ? currentVideoObj.uploader.charAt(0).toUpperCase() : 'V';
                 document.getElementById('videoDate').innerText = `Diunggah tanggal ${currentVideoObj.date}`;
-                document.getElementById('likeCount').innerText = currentVideoObj.likes || "45";
+                document.getElementById('likeCount').innerText = currentVideoObj.likes || "12";
                 document.getElementById('videoDesc').innerText = currentVideoObj.desc;
                 renderComments(currentVideoObj.comments || []);
             }
@@ -106,7 +108,7 @@
                 return;
             }
             list.innerHTML = comments.map(c => `
-                <div class="bg-[#0b0f19] p-3.5 rounded-2xl border border-[#1f293d] space-y-1">
+                <div class="bg-[#0b0f19] p-3.5 rounded-2xl border border-[#1a2234] space-y-1">
                     <div class="font-bold text-xs text-purple-400">${c.user}</div>
                     <p class="text-xs text-gray-300">${c.text}</p>
                 </div>
